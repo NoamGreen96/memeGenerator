@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ultimate Meme Generator</title>
+    <script src="https://kit.fontawesome.com/6f1f8f4e21.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body onload="onInit()">
+    <!-- Main Sceen -->
+    <div class="main-screen" onclick="onToggleMenu()"></div>
+
+    <!-- Header -->
+    <header class="main-header">
+      <div class="header-container main-layout flex space-between align-center"
+      >
+        <div class="flex">
+          <div class="logo" onclick="onOpenPage('gallery')">
+            <img src="ICONS/LOGO/LOGO.png">
+          
+          </div>
+        </div>
+
+        <nav class="main-nav">
+          <ul class="clean-list flex">
+            <li>
+              <a
+                href="#"
+                class="btn-gallery active"
+                onclick="onOpenPage('gallery')"
+                data-trans="nav-gallery"
+                >Gallery</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="btn-memes"
+                onclick="onOpenPage('memes')"
+                data-trans="nav-memes"
+                >Memes</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="btn-about"
+                onclick="onOpenPage('about')"
+                data-trans="nav-about"
+              
+                >About</a
+              >
+            </li>
+          </ul>
+        </nav>
+        <button class="btn-menu" onclick="onToggleMenu()">☰</button>
+      </div>
+    </header>
+
+<!-- editor container -->
+    <main class="editor-container main-layout flex none">
+      <div class="canvas-container" >
+        <canvas
+          id="my-canvas"
+          width="450"
+          height="450"
+          style="outline: 1px solid black"
+        ></canvas>
+      </div>
+
+      <!-- editing Tools: -->
+      <div class="tools-container">
+        <input
+          oninput="onChangetxt(this.value)"
+          type="text"
+          class="text-line"
+          name="line"
+          id="text"
+          placeholder="Write meme text.."
+          title="Write a text"
+        />
+        <button class="btn-editor btn btn-down" title="move line down" onclick="onMoveLine('down')"><img src="ICONS/arrow-down.png" ></button>
+
+        <button class="btn-editor btn-up" 
+        title="move line up" onclick="onMoveLine('up')">
+          <img src="ICONS/arrow-up.png"></button>
+        <button class="btn-editor toggleLine" 
+        title="swich line" onclick="toggleLine()"><img src="ICONS/up-and-down-opposite-double-arrows-side-by-side.png" alt="swich line" ></button>
+
+        <button class="btn-editor addLine" title="add line" onclick="onAddLine('impact')"><img src="ICONS/add.png" alt="add line" ></button>
+
+        <button class="btn-editor removeTxtLine" 
+        title="remove line" onclick="onRemoveLine()">
+         <img src="ICONS/trash.png" alt="remove line" srcset="">
+        </button>
+
+        <button class="btn-editor increaseFont" 
+        title="increaseFont" onclick="increaseFont()"><img src="ICONS/increase font - icon.png" alt="" srcset=""></button>
+
+
+        <button class="btn-editor decreaseFont" onclick="decreaseFont()"><img src="ICONS/decrease font - icon.png" alt="" srcset=""></button>
+
+ <button class="btn-editor text-align-left" 
+    title="text-align-left" onclick="onChangeAlign('left')">
+      <img src="ICONS/align-to-left.png">
+    </button>
+
+    <button class="btn-editor btn-align-center" 
+    title="text align center" onclick="onChangeAlign('center')">
+      <img src="ICONS/center-text-alignment.png" >
+    </button>
+
+
+    <button class="btn-editor btn-align-rihgt" title="text align right "onclick="onChangeAlign('right')">
+      <img src="ICONS/align-to-right.png" >
+    </button>
+
+    <select
+    onchange="onChangeFontFamily(this.value)"
+    name="font-value"
+    id="fontChange"
+    class="change-font"
+  >
+    <option value="impact">Impact</option>
+    <option value="comic">Comic</option>
+    <option value="vardana">vardana</option>
+  </select>
+
+  <button class="btn-editor btn-font-color" title="font color">
+    <input
+      oninput="onChangetxtcolor(this.value)"
+      type="color"
+name="font-color"       
+    />
+    <img src="ICONS/paint-board-and-brush.png" >
+  </button> 
+
+      <button class="btn-editor btn-stroke-color" title="stroke color">
+        <input
+          oninput="onChangeStrokecolor(this.value)"
+          type="color"
+          name="stroke-color"
+          id=""
+          value="#ffffff"
+          
+        />
+        <img src="ICONS/text stroke.png">
+      </button>
+
+      <button class="btn-editor save" onclick="onSaveMeme()">
+        save</button>
+
+<a class="btn-download" href="#"
+onclick="onDownloadMeme(this)"
+download="my-meme.jpg">
+
+<button class="btn-editor download" >Download here</button>
+</a>
+<button class="btn-editor" onclick="onUploadImgToFb()">share on facebook</button>
+  </main>
+  </div>
+
+<!-- gallery container -->
+<main class="gallery-container">
+  <!-- <section class="search-fillter">
+<div class="search-fillter-container main-layout flex
+flex-column justify-center align-center">
+<div>
+  <input type="file" id="BtnUploadHidden" class="img-item" name="image-upload" onchange="onUploadImg(event)" style="display: none;"/>
+  <label  for="BtnUploadHidden" class="btn-upload">Upload an image</label>
+</div>
+</div>
+  </section> -->
+
+<section class="images-container main-layout grid"></section>
+</main>
+
+<!-- memes-section -->
+<main class="my-memes-container none" >
+  <section class="meme-container main-layout grid
+  ">
+<div class="img-gallery">
+</div>
+</section>
+</main>
+
+<!-- about container -->
+<main class="about-container none">
+<section class="about-content main-layout flex
+ flex-column justify-center align-center">
+<h3>hey</h3>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, nam unde modi, tempore veniam ut odio saepe placeat earum animi nostrum tempora repellendus beatae quasi sequi? Provident nostrum adipisci optio?</p>
+</section>
+</main>
+
+<!-- contact-main -->
+<section class="contact-main">
+  <div class="contact-container main-layout flex flex-column justify-center align-center">
+  <div class="contact-img">
+    <img src="img/about-img/1.jpg"></img> 
+  </div>
+  <div class="contact-details">
+    <h2 class="contact-title">Noam Green</h2>
+    <p> Hey my name is noam green and i study full-stack development in coding academy and this is my meme generator😁</p>
+    <ul class="social-nav clean-list flex justify-center">
+<li>
+    <a class="fa-brands fa-linkedin" href="https://www.linkedin.com/"></a>
+</li>
+<li>
+  <a class="fa-brands fa-facebook" href="http://www.facebook.com/"></a>
+</li>
+<li>
+  <a class="fa-brands fa-github" href="http://www.github.com/"></a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- main-footer -->
+<footer class="main-footer">
+<div class="footer-conatiner main-layout flex flex-column space-between align-center">
+<div class="footer-logo">memegen</div>
+<div>all rights reserved 2023</div>
+</div>
+</footer>
+
+  <!-- js  -->
+    <script src="main/sharing-on-facebook.js"></script>
+    <script src="main/meme.storage.js"></script>
+    <script src="main/util.js"></script>
+    <script src="main/meme-service.js"></script>
+    <script src="main/meme-controller.js"></script>
+    <script src="main/gallery-controller.js"></script>
+    <script src="main/gallery-service.js"></script>
+  </body>
+</html>
