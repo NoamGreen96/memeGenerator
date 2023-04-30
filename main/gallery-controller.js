@@ -22,30 +22,33 @@ function onImgSelect(id) {
   renderCanvas()
 }
 
-// function onUploadImg(ev) {
-//   const reader = new FileReader()
-//   reader.onload = function (event) {
-//     let img = new Image()
-//     img.src = event.target.result
-//     setImg(50, img.src)
-//     _moveToEditorPage()
-//     renderCanvas()
-//   }
-//   reader.readAsDataURL(ev.target.files[0])
-// }
+function onUploadImg(ev) {
+  const reader = new FileReader()
+  reader.onload = function (event) {
+    let img = new Image()
+    img.src = event.target.result
 
-// section memes
+    _moveToEditorPage()
+    renderCanvas()
+  }
+  reader.readAsDataURL(ev.target.files[0])
+}
+
+// saved memes render
 function renderMyMemes() {
   const memes = loadFromStorage(STORAGE_KEY)
-  let strHtmls
+  let strHtml
   if (memes.length) {
-    strHtmls = memes
+    strHtml = memes
       .map((meme) => {
         return `<div class="img-gallery" data-id="${meme.id}">
                 <img src="${meme.url}"/>
               </div>`
       })
       .join('')
+  } else {
+    return `<h1>There is no saved memes </h1>`.join('')
   }
-  document.querySelector('.meme-container').innerHTML = strHtmls
+
+  document.querySelector('.meme-container').innerHTML = strHtml
 }

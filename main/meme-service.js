@@ -1,4 +1,5 @@
 'use strict'
+
 const STORAGE_KEY = 'memeDB'
 
 let gElCanvas
@@ -7,8 +8,7 @@ let gCurrLineIdx = 0
 let gIsMemeSave = false
 let isModelOpen = false
 let gSavedMeme = []
-
-var gMeme = {
+let gMeme = {
   selectedImgId: 1,
   selectedLineIdx: 0,
   lines: [
@@ -45,19 +45,7 @@ var gMeme = {
   ],
 }
 
-function getMeme() {
-  return gMeme
-}
-
-function getLine() {
-  return gMeme.lines[gCurrLineIdx]
-}
-
-function getLines() {
-  return gMeme.lines
-}
-
-// editor
+// Editing tools
 function saveMeme(url) {
   const id = makeId()
   gSavedMeme.push({ id, url })
@@ -65,7 +53,7 @@ function saveMeme(url) {
 }
 
 function moveLine(diff, dir) {
-  const line = getLine()
+  const line = getCurrLine()
   line.pos[dir] += diff
 }
 
@@ -89,7 +77,7 @@ function _createLine(font, lineIdx) {
 }
 
 function changeAlign(align) {
-  const line = getLine()
+  const line = getCurrLine()
   line.align = align
 
   switch (align) {
@@ -106,14 +94,14 @@ function changeAlign(align) {
 }
 
 function changeFontFamily(font) {
-  const line = getLine()
+  const line = getCurrLine()
   if (!line) return
   line.font = font
   renderCanvas()
 }
 
 function swichLine() {
-  const line = getLine()
+  const line = getCurrLine()
   gCurrLineIdx++
   clearText(line.txt)
   if (gCurrLineIdx === gMeme.lines.length) gCurrLineIdx = 0
@@ -134,4 +122,20 @@ function clearText(txt) {
   } else {
     document.querySelector('#text').value = txt
   }
+}
+
+function getMeme() {
+  return gMeme
+}
+
+function getCurrLine() {
+  return gMeme.lines[gCurrLineIdx]
+}
+
+function getLines() {
+  return gMeme.lines
+}
+
+function _saveMemesToStorage() {
+  saveToStorage(STORAGE_KEY, gSavedMeme)
 }

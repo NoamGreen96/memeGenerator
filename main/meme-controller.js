@@ -9,7 +9,7 @@ function onInit() {
 }
 
 ///////////////////////////////////////////////
-//              Page functions               //
+//      Page layout functions               //
 ///////////////////////////////////////////////
 
 function onToggleMenu() {
@@ -80,49 +80,60 @@ function renderCanvas() {
   var img = new Image()
   img.src = `img/${meme.selectedImgId}.jpg`
   img.onload = function () {
-    gCtx.drawImage(img, 0, 0) // Draws the entire image at (0, 0) on the canvas
+    gCtx.drawImage(img, 0, 0)
     meme.lines.forEach((line) => {
       gCtx.font = `${line.size}px ${line.font}`
       gCtx.fillStyle = line.color
       gCtx.strokeStyle = line.strokeColor
       gCtx.lineWidth = 1
       gCtx.textAlign = line.align
-      gCtx.textBaseline = 'middle' // Set the fill color for the text
+      gCtx.textBaseline = 'middle'
       let text = line.txt
       gCtx.fillText(text, line.pos.x, line.pos.y)
       gCtx.strokeText(text, line.pos.x, line.pos.y)
-      drawBorder()
     })
+    drawBorderLine()
   }
 }
 
-function drawBorder() {
-  const line = getLine()
+function drawBorderLine() {
+  const line = getCurrLine()
   if (!line) return
   gCtx.beginPath()
-  gCtx.rect(
-    line.pos.x - gCtx.measureText(line.txt).width / 2 - 10,
-    line.pos.y - 10,
-    gCtx.measureText(line.txt).width + 20,
-    line.size + 20
-  )
+  if (!line.pos.x) {
+    gCtx.rect(
+      0,
+      line.pos.y - 20,
+      gCtx.measureText(line.txt).width + 10,
+      line.size + 20
+    )
+  } else if (line.pos.x + gCtx.measureText(line.txt).width > gElCanvas.width) {
+    gCtx.rect(
+      gElCanvas.width - gCtx.measureText(line.txt).width - 10,
+      line.pos.y - 20,
+      gElCanvas.width,
+      line.size + 20
+    )
+  } else {
+    gCtx.rect(
+      line.pos.x - gCtx.measureText(line.txt).width / 2 - 10,
+      line.pos.y - 20,
+      gCtx.measureText(line.txt).width + 20,
+      line.size + 20
+    )
+  }
   gCtx.lineWidth = 2
   gCtx.strokeStyle = 'black'
   gCtx.stroke()
   gCtx.closePath()
 }
 
-function addMouseListeners() {
-  gElCanvas.addEventListener('mousedown', onDown)
-}
-
-function addTouchListeners() {
-  gElCanvas.addEventListener('touchstart', onDown)
-}
-
 function addListeners() {
   addMouseListeners()
-  addTouchListeners()
+}
+
+function addMouseListeners() {
+  gElCanvas.addEventListener('mousedown', onDown)
 }
 
 function onDown(ev) {
@@ -162,10 +173,11 @@ function onSaveMeme() {
   const memeOnGallery = gElCanvas.toDataURL()
   saveMeme(memeOnGallery)
   gIsMemeSave = false
+  alert('meme is saved!')
 }
 
 function onAddLine(font) {
-  const lines = getLine()
+  const lines = getCurrLine()
   clearText(lines.txt)
   if (lines.length === 3) return
   const lineIdx = lines.length + 1
@@ -198,7 +210,7 @@ function onRemoveLine() {
 }
 
 function onChangetxt(txt) {
-  const line = getLine()
+  const line = getCurrLine()
   line.txt = txt
   renderCanvas()
 }
@@ -225,5 +237,5 @@ function decreaseFont() {
 
 function toggleLine() {
   swichLine()
-  renderCanvas
+  renderCanvas()
 }

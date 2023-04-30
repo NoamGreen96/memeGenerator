@@ -22,7 +22,7 @@ var gImgs = [
 ]
 
 function getImgs() {
-  if (gFillterWord === 'all') return gImgs
+  return gImgs
 }
 
 function setimgById(id) {
@@ -30,11 +30,11 @@ function setimgById(id) {
   return gImgs[id]
 }
 
-// function setImg(id, url) {
-//   if (id === 50) {
-//     const id = makeId()
-//     gImgs.push({ id, url })
-//     gImgs.selectedImgId = id
-//     setimgById(id)
-//   }
-// }
+function setImg(id, url) {
+  if (id === 50) {
+    const id = makeId()
+    gImgs.push({ id, url })
+    gImgs.selectedImgId = id
+    setimgById(id)
+  }
+}
